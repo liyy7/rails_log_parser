@@ -1,0 +1,7 @@
+# bundle
+/.bundle
+/vendor/bundle
+
+# IDE
+/*.iml
+/.idea
