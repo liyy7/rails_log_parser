@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    coderay (1.1.1)
     elasticsearch (1.0.15)
       elasticsearch-api (= 1.0.15)
       elasticsearch-transport (= 1.0.15)
@@ -11,14 +12,23 @@ GEM
       multi_json
     faraday (0.9.2)
       multipart-post (>= 1.2, < 3)
+    method_source (0.8.2)
     multi_json (1.11.2)
     multipart-post (2.0.0)
+    pry (0.10.3)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
+    request-log-analyzer (1.13.4)
+    slop (3.6.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   elasticsearch
+  pry
+  request-log-analyzer
 
 BUNDLED WITH
    1.11.2
