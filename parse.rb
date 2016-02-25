@@ -46,10 +46,10 @@ def print_message(message)
   msgs[1..-1].each { |msg| puts "#{' ' * prefix.size}#{msg}" }
 end
 
-def parse(file)
+def parse(fd)
   current_message = nil
 
-  File.open(file).each do |line|
+  fd.each do |line|
     line.strip!
     matched = MSG_REGEX.match(line)
     if matched.nil?
@@ -81,7 +81,16 @@ def recreate_index(es_client, index, type)
       type => {
         properties: {
           timestamp: {
-            type: 'date'
+            type: 'date',
+            format: 'epoch_millis'
+          },
+          type: {
+            type: 'string',
+            index: 'not_analyzed'
+          },
+          message: {
+            type: 'string',
+            index: 'analyzed'
           }
         }
       }
@@ -91,6 +100,7 @@ end
 
 # How to execute:
 #  ./parse.rb log/production.log
+#  cat log/production.log | ./parse.rb
 if __FILE__ == $0
   es_client = Elasticsearch::Client.new
   index = 'rails_log'
@@ -98,7 +108,7 @@ if __FILE__ == $0
 
   recreate_index(es_client, index, type)
 
-  parse(ARGV.first) do |message|
+  parse(ARGV.empty? ? STDIN : File.open(ARGV.first)) do |message|
     save_message(es_client, index, type, message)
     print_message(message)
   end
